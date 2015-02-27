@@ -24,7 +24,7 @@ jQuery(document).ready(function($){
         ////////////////////////////
         if ( pressedKeys[69] && pressedKeys[74] && pressedKeys[84] ) {
             if ( confirm( 'Blast off to the Jetpack Settings Page?' ) ) {
-                window.location.href = keyboard_shortcut_vars.home_url + "/wp-admin/admin.php?page=jetpack_modules";
+                window.location.href = smartkeys_vars.home_url + "/wp-admin/admin.php?page=jetpack_modules";
             }
 
             pressedKeys = [];
@@ -36,7 +36,7 @@ jQuery(document).ready(function($){
         ////////////////////////////
         if ( pressedKeys[79] && pressedKeys[80] && pressedKeys[83] && pressedKeys[84] ) {
             if ( confirm( 'Take me to write a new post' ) ) {
-                window.location.href = keyboard_shortcut_vars.home_url + "/wp-admin/post-new.php";
+                window.location.href = smartkeys_vars.home_url + "/wp-admin/post-new.php";
             }
             pressedKeys = [];
         }

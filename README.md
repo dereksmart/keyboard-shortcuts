@@ -1,6 +1,14 @@
-# Keyboard Shortcuts for WordPress
+# SmartKeys is a Keyboard Shortcut plugin for WordPress
 
 Adds keyboard shortcuts to your WordPress website,
 with the ability to customize and create your own (coming soon)
 
-For example: hold down p + o + s + t and you will be taken to the "new post" page.
+# Some Keyboard Shortcuts:
+WordPress:
+New Post:  cmd + shift + s
+
+Jetpack:
+Navigate to Jetpack Settings:  j + e + t
+Omnisearch:	 cmd + shift + s
+
+

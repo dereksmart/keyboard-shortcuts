@@ -21,11 +21,11 @@
 
 <hr/>
 
-<form method="post" id="keyboard_shortcuts_settings">
+<form method="post" id="smartkeys_settings">
 	<label for="saved_keys">Which keys would you like to save? <br> separate by comma <br></label>
 	<input type="text" id="saved_keys" name="saved_keys"/>
 	<input class="button-primary" type="submit" value="Update Settings" name="submit">
-	<?php wp_nonce_field( 'keyboard_shortcuts_save' , 'keyboard_shortcuts_save_nonce' ); ?>
+	<?php wp_nonce_field( 'smartkeys_save' , 'smartkeys_save_nonce' ); ?>
 </form>
 
 
