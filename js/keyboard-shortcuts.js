@@ -23,7 +23,9 @@ jQuery(document).ready(function($){
         // p + o + s + t
         ////////////////////////////
         if ( pressedKeys[79] && pressedKeys[80] && pressedKeys[83] && pressedKeys[84] ) {
-            window.location.href = keyboard_shortcut_vars.home_url + "/wp-admin/post-new.php";
+            if ( confirm( 'Take me to write a new post' ) ) {
+                window.location.href = keyboard_shortcut_vars.home_url + "/wp-admin/post-new.php";
+            }
             pressedKeys = [];
         }
 
