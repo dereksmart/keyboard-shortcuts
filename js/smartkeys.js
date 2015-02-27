@@ -15,7 +15,7 @@ jQuery(document).ready(function($){
             $( '#adminbar-search' ).focus();
             $( 'input#adminbar-search' ).select();
 
-            pressedKeys = [];
+            return;
         }
 
         ////////////////////////////
@@ -27,7 +27,7 @@ jQuery(document).ready(function($){
                 window.location.href = smartkeys_vars.home_url + "/wp-admin/admin.php?page=jetpack_modules";
             }
 
-            pressedKeys = [];
+            return;
         }
 
         ////////////////////////////

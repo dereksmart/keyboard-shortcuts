@@ -18,6 +18,7 @@ class Smartkeys {
 
 	public static function smartkeys_enqueue() {
 		wp_enqueue_script( 'smartkeys', plugin_dir_url( __FILE__ ) . 'js/smartkeys.js', array( 'jquery' ), false );
+		wp_enqueue_script( 'smart-control', plugin_dir_url( __FILE__ ) . 'js/smart-control.js', array( 'jquery' ), false );
 		wp_localize_script( 'smartkeys', 'smartkeys_vars',
 			array(
 				'home_url' => home_url()
