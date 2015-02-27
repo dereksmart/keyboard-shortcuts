@@ -59,9 +59,7 @@ class Keyboard_Shortcuts_Admin {
 		include 'views/admin-settings.php';
 	}
 	
-	/**
-	 * Save our settings
-	 */
+	// Save the settings
 	function keyboard_shortcuts_save_settings() {
 		if ( isset( $_POST['keyboard_shortcuts_save_nonce'] ) && wp_verify_nonce( $_POST['keyboard_shortcuts_save_nonce'], 'keyboard_shortcuts_save' ) ) {
 			update_option( 'keys_to_save', $_POST['saved_keys'] );

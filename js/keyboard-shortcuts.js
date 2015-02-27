@@ -9,11 +9,23 @@ jQuery(document).ready(function($){
 
         ////////////////////////////
         // Jetpack: Omnisearch
-        // COMMAND + SHIFT + S
+        // cmd + shift + s
         ////////////////////////////
         if ( pressedKeys[16] && pressedKeys[83] && pressedKeys[91] ) {
             $( '#adminbar-search' ).focus();
             $( 'input#adminbar-search' ).select();
+
+            pressedKeys = [];
+        }
+
+        ////////////////////////////
+        // Jetpack: Go to settings page
+        // j + e + t
+        ////////////////////////////
+        if ( pressedKeys[69] && pressedKeys[74] && pressedKeys[84] ) {
+            if ( confirm( 'Blast off to the Jetpack Settings Page?' ) ) {
+                window.location.href = keyboard_shortcut_vars.home_url + "/wp-admin/admin.php?page=jetpack_modules";
+            }
 
             pressedKeys = [];
         }
