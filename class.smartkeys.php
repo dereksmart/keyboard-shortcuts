@@ -25,7 +25,8 @@ class Smartkeys {
 		wp_enqueue_script( 'smartkeys-master', plugin_dir_url( __FILE__ ) . 'js/smartkeys-master.js', array( 'jquery' ), false );
 		wp_localize_script( 'smartkeys-master', 'smartkeys_master_vars',
 			array(
-				'home_url' => home_url()
+				'home_url'        => home_url(),
+				'option_keycodes' => get_option( 'keys_to_save' )
 			)
 		);
 	}

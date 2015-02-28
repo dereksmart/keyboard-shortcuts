@@ -1,6 +1,12 @@
 (function($) {
     var k = []; // The pressed key
 
+    var defaultCommands = [];
+    var userCommands    = [];
+
+    /*
+    Accepted Commands go here.
+     */
     var acceptedCommands = [
         'nav home',
         'write post'
@@ -11,6 +17,18 @@
         trackKeys();
     });
 
+
+    /*
+    Convert the key pressed into a letter!
+     */
+    function convertToCharacter(e) {
+        return String.fromCharCode(e.which);
+    }
+
+
+    /*
+    Track which keys are pressed
+     */
     function trackKeys() {
         combo = '';
 
@@ -18,8 +36,8 @@
             e = e || event; // deal with IE
             k[e.keyCode] = e.type == 'keydown';
 
-            // Shift (16) is the magic key, press thrice to unlock smartness
-            if ( k[16] ) {
+            // Shift is the magic key, press thrice to unlock smartness
+            if ( e.shiftKey ) {
                 combo += 'go';
             } else {
                 combo = '';
@@ -30,8 +48,6 @@
                 smartPrompt();
                 return;
             }
-
-            console.log(combo);
 
             keyboardShortcuts();
         };
@@ -46,6 +62,11 @@
         console.log(combo);
     }
 
+    /*
+    Activates the smart prompt
+    If input is empty or not in accepted array, give them another chance.
+    If the prompt is accepted, do something.
+     */
     function smartPrompt() {
         var userInput = prompt( 'What would you like to do? \n\n' + acceptedCommands.join().replace( ",", "\n" ) );
         var isAccepted = acceptedCommands.indexOf( userInput ) == 0;
