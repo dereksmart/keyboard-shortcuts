@@ -7,10 +7,18 @@
     /*
     Accepted Commands go here.
      */
-    var acceptedCommands = [
+    var acceptedCommandsWP = [
+        'add user',
         'nav home',
         'write post'
     ];
+
+    var acceptedCommandsJP = [
+        'jp settings',
+        'jp stats'
+    ];
+
+    var acceptedCommands = acceptedCommandsWP.concat( acceptedCommandsJP );
 
     // Init
     $(document).ready(function () {
@@ -68,8 +76,11 @@
     If the prompt is accepted, do something.
      */
     function smartPrompt() {
-        var userInput = prompt( 'What would you like to do? \n\n' + acceptedCommands.join().replace( ",", "\n" ) );
-        var isAccepted = acceptedCommands.indexOf( userInput ) == 0;
+        var userInput = prompt( 'What would you like to do? \n\n' +
+            'WordPress Commands\n\t' + acceptedCommandsWP.join().replace(/,/g, "\n\t" ) +
+            '\n\nJetpack Commands\n\t' + acceptedCommandsJP.join().replace(/,/g, "\n\t" )
+        );
+        var isAccepted = acceptedCommands.indexOf( userInput ) > 0;
 
         // If the command is not accepted, try again?
         // @todo show them a list of accepted
