@@ -54,9 +54,14 @@ class Smartkeys {
 					$v[2] = 'admin.php?page=' . $v[2];
 				}
 
+				// Some menu items have span tags in them, let's remove the number
+				if ( preg_match( '/(>\d{1,3}<)/', $v[0], $match ) ) {
+					$v[0] = wp_strip_all_tags( str_replace( $match, '', $v[0] ) );
+				}
+
 				// We don't want to add separators here.
-				if ( $v[4] != 'wp-menu-separator' ) {
-					$menu_name[] = wp_strip_all_tags( $v[0] );
+				if ( $v[4] !== 'wp-menu-separator' ) {
+					$menu_name[] = strtolower( $v[0] );
 					$menu_url[]  = $v[2];
 				}
 			}
