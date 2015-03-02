@@ -15,8 +15,7 @@ class Smartkeys {
 	}
 
 	function __construct() {
-		add_action( 'init', array( $this, 'smartkeys_jetpack_commands' ) );
-		add_action( 'init', array( $this, 'smartkeys_wordpress_commands' ) );
+		add_action( 'init', array( $this, 'smartkeys_prompt_commands' ) );
 
 		if ( is_user_logged_in() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'smartkeys_enqueue_admin_keys' ) );
@@ -27,23 +26,10 @@ class Smartkeys {
 	}
 
 	/*
-	 * Handle the Jetpack commands
-	 * @return array
-	 */
-	function smartkeys_jetpack_commands() {
-		$default_jp_commands = array(
-			'jp_settings' => admin_url( 'admin.php?page=jetpack_modules' ),
-			'jp_stats'    => admin_url( 'admin.php?page=stats' ),
-		);
-
-		return $default_jp_commands;
-	}
-
-	/*
 	 * Handle WordPress commands
 	 * @return array
 	 */
-	function smartkeys_wordpress_commands() {
+	function smartkeys_prompt_commands() {
 		global $menu, $submenu;
 
 		/*
@@ -63,17 +49,25 @@ class Smartkeys {
 		$menu_url  = array();
 		if ( is_array( $menu ) ) {
 			foreach ( $menu as $k => $v ) {
-				$menu_name[] = $v[0];
-				$menu_url[]  = $v[2];
+				// If a plugin adds a top-level menu, make sure we can get to it.
+				if ( ! strstr( $v[2], '.php' ) ) {
+					$v[2] = 'admin.php?page=' . $v[2];
+				}
+
+				// We don't want to add separators here.
+				if ( $v[4] != 'wp-menu-separator' ) {
+					$menu_name[] = wp_strip_all_tags( $v[0] );
+					$menu_url[]  = $v[2];
+				}
 			}
 		}
 
-		$default_wp_commands = array(
+		$default_commands = array(
 			'command' => $menu_name,
 			'action'  => $menu_url
 		);
 
-		return $default_wp_commands;
+		return $default_commands;
 	}
 
 	function smartkeys_enqueue_admin_keys() {
@@ -82,8 +76,7 @@ class Smartkeys {
 			array(
 				'home_url'        => home_url(),
 				'option_keycodes' => get_option( 'keys_to_save' ),
-				'jp_commands'     => $this->smartkeys_jetpack_commands(),
-				'wp_commands'     => $this->smartkeys_wordpress_commands(),
+				'prompt_commands' => $this->smartkeys_prompt_commands(),
 			)
 		);
 	}

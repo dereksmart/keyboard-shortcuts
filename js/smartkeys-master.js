@@ -4,7 +4,7 @@
     /*
     Accepted Commands
      */
-    var commandsActions = smartkeys_master_vars.wp_commands;
+    var commandsActions = smartkeys_master_vars.prompt_commands;
 
     console.log(commandsActions);
 
@@ -53,8 +53,6 @@
 
             keyboardShortcuts();
         };
-
-        console.log(combo);
     }
 
     /*
