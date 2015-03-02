@@ -56,13 +56,12 @@
     }
 
     /*
-    Activates the smart prompt
+    Larry Bird for the 3!!!
     If input is empty or not in accepted array, give them another chance.
     If the prompt is accepted, do something.
      */
     function smartPrompt() {
-        var userInput = prompt( 'What would you like to do? \n\n' +
-            'WordPress Commands\n\t' + commandsActions.command.join().replace(/,/g, "\n\t" )
+        var userInput = prompt( 'Where do you want to go? \n\n' + commandsActions.command.join().replace(/,/g, "\n" )
         );
 
         var isAccepted = _.contains( commandsActions.command, userInput );

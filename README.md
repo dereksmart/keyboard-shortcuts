@@ -15,3 +15,5 @@ with the ability to customize and create your own (coming soon)
 | Omnisearch | cmd + shift + s|
 
 
+# Larry Bird for the 3!!!
+Or, you can use Larry Bird - He'll help you get around. Just press shift 3x and tell him where to go.
