@@ -36,10 +36,10 @@
             e = e || event; // deal with IE
             k[e.keyCode] = e.type == 'keydown';
 
-            // Shift is the magic key, press thrice to unlock smartness
+            // J is the magic key, press thrice to unlock smartness
             if ( e.shiftKey ) {
                 combo += 'go';
-            } else if ( k[91] ) {
+            } else if ( k[74] ) {
                 combo += 'jet'
             } else {
                 combo = '';
