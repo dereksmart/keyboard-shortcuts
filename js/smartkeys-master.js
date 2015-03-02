@@ -30,26 +30,23 @@
     Track which keys are pressed
      */
     function trackKeys() {
-        combo = '';
-
         onkeydown = function(e){
             e = e || event; // deal with IE
             k[e.keyCode] = e.type == 'keydown';
 
             // J is the magic key, press thrice to unlock smartness
             if ( e.shiftKey ) {
-                combo += 'go';
+                currentCombo += 'go';
             } else if ( k[74] ) {
-                combo += 'jet'
+				currentCombo += 'jet'
             } else {
-                combo = '';
+				currentCombo = '';
             }
-
             // The magic key was pressed thrice! gogogo!
-            if ( combo === 'gogogo' ) {
+            if ( currentCombo === 'gogogo' ) {
                 smartPrompt();
                 return;
-            } else if ( combo === 'jetjetjet' ) {
+            } else if ( currentCombo === 'jetjetjet' ) {
                 jetPrompt();
                 return;
             }
@@ -71,10 +68,13 @@
     If the prompt is accepted, do something.
      */
     function smartPrompt() {
+		currentCombo = ''; // resets currentCombo
         var newTab     = '_self';
         var userInput  = prompt( 'Where do you want to go? \n\n' + commandsActions.command.join().replace(/,/g, "\n" ) );
         var hasNew     = userInput.search( /(new)/ );
         var isAccepted = false;
+
+
 
         // Check for a " new" tab requested and strip it from the input
         if ( hasNew > -1 && endsWith( userInput, ' new' ) ) {
@@ -111,6 +111,7 @@
      If the prompt is accepted, do something.
      */
     function jetPrompt() {
+		currentCombo = ''; // resets currentCombo
         var newTab     = '_self';
         var userInput  = prompt( 'Blast off where? \n\n' + jetpackCommands.command.join().replace(/,/g, "\n" ) );
         var hasNew     = userInput.search( /(new)/ );

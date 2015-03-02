@@ -112,7 +112,8 @@ class Smartkeys {
 				'home_url'         => home_url(),
 				'option_keycodes'  => get_option( 'keys_to_save' ),
 				'prompt_commands'  => $this->smartkeys_prompt_commands(),
-				'jetpack_commands' => $this->smartkeys_jetpack_prompt_commands()
+				'jetpack_commands' => $this->smartkeys_jetpack_prompt_commands(),
+				'currentCombo'   => '',
 			)
 		);
 	}
