@@ -111,7 +111,7 @@
      If the prompt is accepted, do something.
      */
     function jetPrompt() {
-		currentCombo = ''; // resets currentCombo
+        smartkeys_master_vars.currentCombo = ''; // resets currentCombo
         var newTab     = '_self';
         var userInput  = prompt( 'Blast off where? \n\n' + jetpackCommands.command.join().replace(/,/g, "\n" ) );
         var hasNew     = userInput.search( /(new)/ );
