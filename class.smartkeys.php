@@ -15,12 +15,14 @@ class Smartkeys {
 	}
 
 	function __construct() {
+
 		if ( is_user_logged_in() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'smartkeys_enqueue_admin_keys' ) );
 			add_action( 'wp_enqueue_scripts',    array( $this, 'smartkeys_enqueue_admin_keys' ) );
 		} else {
 			add_action( 'wp_enqueue_scripts',    array( $this, 'smartkeys_enqueue_visitor_keys' ) );
 		}
+
 	}
 
 	/*
@@ -80,13 +82,37 @@ class Smartkeys {
 		return $default_commands;
 	}
 
+	function smartkeys_jetpack_prompt_commands() {
+		if ( Jetpack::is_active() ) {
+			$modules = Jetpack::get_available_modules();
+
+			$module_name = array();
+			$settings_url = array();
+			foreach ( $modules as $module ) {
+				if ( Jetpack::module_configuration_url( $module ) ) {
+					$settings_url[] = Jetpack::module_configuration_url( $module );
+				}
+
+				$module_name[] = $module;
+			}
+		}
+
+		$jp_defaults = array(
+			'command' => $module_name,
+			'action'  => $settings_url
+		);
+
+		return $jp_defaults;
+	}
+
 	function smartkeys_enqueue_admin_keys() {
 		wp_enqueue_script( 'smartkeys-master', plugin_dir_url( __FILE__ ) . 'js/smartkeys-master.js', array( 'jquery', 'underscore' ), false );
 		wp_localize_script( 'smartkeys-master', 'smartkeys_master_vars',
 			array(
-				'home_url'        => home_url(),
-				'option_keycodes' => get_option( 'keys_to_save' ),
-				'prompt_commands' => $this->smartkeys_prompt_commands(),
+				'home_url'         => home_url(),
+				'option_keycodes'  => get_option( 'keys_to_save' ),
+				'prompt_commands'  => $this->smartkeys_prompt_commands(),
+				'jetpack_commands' => $this->smartkeys_jetpack_prompt_commands()
 			)
 		);
 	}

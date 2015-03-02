@@ -5,8 +5,9 @@
     Accepted Commands
      */
     var commandsActions = smartkeys_master_vars.prompt_commands;
+    var jetpackCommands = smartkeys_master_vars.jetpack_commands;
 
-    console.log(commandsActions);
+    console.log(jetpackCommands);
 
     // Init
     $(document).ready(function () {
@@ -38,6 +39,8 @@
             // Shift is the magic key, press thrice to unlock smartness
             if ( e.shiftKey ) {
                 combo += 'go';
+            } else if ( k[91] ) {
+                combo += 'jet'
             } else {
                 combo = '';
             }
@@ -45,6 +48,9 @@
             // The magic key was pressed thrice! gogogo!
             if ( combo === 'gogogo' ) {
                 smartPrompt();
+                return;
+            } else if ( combo === 'jetjetjet' ) {
+                jetPrompt();
                 return;
             }
 
@@ -65,9 +71,10 @@
     If the prompt is accepted, do something.
      */
     function smartPrompt() {
-        var newTab    = '_self';
-        var userInput = prompt( 'Where do you want to go? \n\n' + commandsActions.command.join().replace(/,/g, "\n" ) );
-        var hasNew    = userInput.search( /(new)/ );
+        var newTab     = '_self';
+        var userInput  = prompt( 'Where do you want to go? \n\n' + commandsActions.command.join().replace(/,/g, "\n" ) );
+        var hasNew     = userInput.search( /(new)/ );
+        var isAccepted = false;
 
         // Check for a " new" tab requested and strip it from the input
         if ( hasNew > -1 && endsWith( userInput, ' new' ) ) {
@@ -75,9 +82,9 @@
             userInput = userInput.replace( ' new' , '' );
         }
 
-        console.log( userInput );
-
-        var isAccepted = _.contains( commandsActions.command, userInput );
+        if ( _.contains( commandsActions.command, userInput ) ) {
+            isAccepted = true;
+        }
 
         // If the command is not accepted, try again?
         if ( userInput == '' || ! isAccepted ) {
@@ -92,6 +99,46 @@
             var action = commandsActions.action[commandKey];
 
             window.open( smartkeys_master_vars.home_url + "/wp-admin/" + action, newTab );
+        }
+    }
+
+
+    /*
+     Jetpack Commands!!!
+     Quickly navigate to any jetpack settings area
+
+     If input is empty or not in accepted array, give them another chance.
+     If the prompt is accepted, do something.
+     */
+    function jetPrompt() {
+        var newTab     = '_self';
+        var userInput  = prompt( 'Blast off where? \n\n' + jetpackCommands.command.join().replace(/,/g, "\n" ) );
+        var hasNew     = userInput.search( /(new)/ );
+        var isAccepted = false;
+
+        // Check for a " new" tab requested and strip it from the input
+        if ( hasNew > -1 && endsWith( userInput, ' new' ) ) {
+            newTab = '_blank';
+            userInput = userInput.replace( ' new' , '' );
+        }
+
+        if ( _.contains( jetpackCommands.command, userInput ) ) {
+            isAccepted = true;
+        }
+
+        // If the command is not accepted, try again?
+        if ( userInput == '' || ! isAccepted ) {
+            if ( confirm( 'That command was not found, try again?' ) ) {
+                smartPrompt();
+            }
+        }
+
+        // Woot! Command accepted: do something
+        if ( isAccepted ) {
+            var commandKey = _.indexOf( jetpackCommands.command, userInput );
+            var action = jetpackCommands.action[commandKey];
+
+            window.open( action, newTab );
         }
     }
 
