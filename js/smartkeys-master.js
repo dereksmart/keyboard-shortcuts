@@ -1,24 +1,12 @@
 (function($) {
     var k = []; // The pressed key
 
-    var defaultCommands = [];
-    var userCommands    = [];
-
     /*
-    Accepted Commands go here.
+    Accepted Commands
      */
-    var acceptedCommandsWP = [
-        'add user',
-        'nav home',
-        'write post'
-    ];
+    var commandsActions = smartkeys_master_vars.wp_commands;
 
-    var acceptedCommandsJP = [
-        'jp settings',
-        'jp stats'
-    ];
-
-    var acceptedCommands = acceptedCommandsWP.concat( acceptedCommandsJP );
+    console.log(commandsActions);
 
     // Init
     $(document).ready(function () {
@@ -32,7 +20,6 @@
     function convertToCharacter(e) {
         return String.fromCharCode(e.which);
     }
-
 
     /*
     Track which keys are pressed
@@ -77,13 +64,12 @@
      */
     function smartPrompt() {
         var userInput = prompt( 'What would you like to do? \n\n' +
-            'WordPress Commands\n\t' + acceptedCommandsWP.join().replace(/,/g, "\n\t" ) +
-            '\n\nJetpack Commands\n\t' + acceptedCommandsJP.join().replace(/,/g, "\n\t" )
+            'WordPress Commands\n\t' + commandsActions.command.join().replace(/,/g, "\n\t" )
         );
-        var isAccepted = acceptedCommands.indexOf( userInput ) > 0;
+
+        var isAccepted = _.contains( commandsActions.command, userInput );
 
         // If the command is not accepted, try again?
-        // @todo show them a list of accepted
         if ( userInput == '' || userInput && ! isAccepted ) {
             if ( confirm( 'That command was not found, try again?' ) ) {
                 smartPrompt();
@@ -92,8 +78,10 @@
 
         // Woot! Command accepted: do something
         if ( isAccepted ) {
-            console.log(userInput);
-            window.location.href = smartkeys_master_vars.home_url;
+            var commandKey = _.indexOf( commandsActions.command, userInput );
+            var action = commandsActions.action[commandKey];
+
+            window.location.href = smartkeys_master_vars.home_url + "/wp-admin/" + action;
         }
     }
 

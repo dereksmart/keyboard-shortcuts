@@ -19,5 +19,3 @@ if ( is_admin() ) {
 }
 
 require_once( SMARTKEYS__PLUGIN_DIR . 'class.smartkeys.php' );
-
-add_action( 'init', array( 'Smartkeys', 'init' ) );
