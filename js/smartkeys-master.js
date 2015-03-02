@@ -36,17 +36,17 @@
 
             // J is the magic key, press thrice to unlock smartness
             if ( e.shiftKey ) {
-                currentCombo += 'go';
+				smartkeys_master_vars.currentCombo += 'go';
             } else if ( k[74] ) {
-				currentCombo += 'jet'
+				smartkeys_master_vars.currentCombo += 'jet'
             } else {
-				currentCombo = '';
+				smartkeys_master_vars.currentCombo = '';
             }
             // The magic key was pressed thrice! gogogo!
-            if ( currentCombo === 'gogogo' ) {
+            if ( smartkeys_master_vars.currentCombo === 'gogogo' ) {
                 smartPrompt();
                 return;
-            } else if ( currentCombo === 'jetjetjet' ) {
+            } else if ( smartkeys_master_vars.currentCombo === 'jetjetjet' ) {
                 jetPrompt();
                 return;
             }
@@ -68,7 +68,7 @@
     If the prompt is accepted, do something.
      */
     function smartPrompt() {
-		currentCombo = ''; // resets currentCombo
+		smartkeys_master_vars.currentCombo = ''; // resets currentCombo
         var newTab     = '_self';
         var userInput  = prompt( 'Where do you want to go? \n\n' + commandsActions.command.join().replace(/,/g, "\n" ) );
         var hasNew     = userInput.search( /(new)/ );
