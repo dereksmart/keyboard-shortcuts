@@ -15,8 +15,6 @@ class Smartkeys {
 	}
 
 	function __construct() {
-		add_action( 'init', array( $this, 'smartkeys_prompt_commands' ) );
-
 		if ( is_user_logged_in() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'smartkeys_enqueue_admin_keys' ) );
 			add_action( 'wp_enqueue_scripts',    array( $this, 'smartkeys_enqueue_admin_keys' ) );
@@ -67,10 +65,17 @@ class Smartkeys {
 			}
 		}
 
-		$default_commands = array(
+		$defaults = array(
 			'command' => $menu_name,
 			'action'  => $menu_url
 		);
+
+		// Only update in admin because global $menu is not available outside of admin
+		if ( is_admin() ) {
+			update_option( 'smartkey_commands', $defaults );
+		}
+
+		$default_commands = get_option('smartkey_commands');
 
 		return $default_commands;
 	}

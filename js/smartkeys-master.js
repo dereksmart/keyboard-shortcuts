@@ -13,6 +13,10 @@
         trackKeys();
     });
 
+    // Little function to check if a string ends with something
+    function endsWith(str, suffix) {
+        return str.indexOf(suffix, str.length - suffix.length) !== -1;
+    }
 
     /*
     Convert the key pressed into a letter!
@@ -61,13 +65,22 @@
     If the prompt is accepted, do something.
      */
     function smartPrompt() {
-        var userInput = prompt( 'Where do you want to go? \n\n' + commandsActions.command.join().replace(/,/g, "\n" )
-        );
+        var newTab    = '_self';
+        var userInput = prompt( 'Where do you want to go? \n\n' + commandsActions.command.join().replace(/,/g, "\n" ) );
+        var hasNew    = userInput.search( /(new)/ );
+
+        // Check for a " new" tab requested and strip it from the input
+        if ( hasNew > -1 && endsWith( userInput, ' new' ) ) {
+            newTab = '_blank';
+            userInput = userInput.replace( ' new' , '' );
+        }
+
+        console.log( userInput );
 
         var isAccepted = _.contains( commandsActions.command, userInput );
 
         // If the command is not accepted, try again?
-        if ( userInput == '' || userInput && ! isAccepted ) {
+        if ( userInput == '' || ! isAccepted ) {
             if ( confirm( 'That command was not found, try again?' ) ) {
                 smartPrompt();
             }
@@ -78,7 +91,7 @@
             var commandKey = _.indexOf( commandsActions.command, userInput );
             var action = commandsActions.action[commandKey];
 
-            window.location.href = smartkeys_master_vars.home_url + "/wp-admin/" + action;
+            window.open( smartkeys_master_vars.home_url + "/wp-admin/" + action, newTab );
         }
     }
 
