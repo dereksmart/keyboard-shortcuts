@@ -7,7 +7,7 @@
     var commandsActions = smartkeys_master_vars.prompt_commands;
     var jetpackCommands = smartkeys_master_vars.jetpack_commands;
 
-    console.log(jetpackCommands);
+    //console.log(jetpackCommands);
 
     // Init
     $(document).ready(function () {
@@ -39,6 +39,8 @@
 				smartkeys_master_vars.currentCombo += 'go';
             } else if ( k[74] ) {
 				smartkeys_master_vars.currentCombo += 'jet'
+            } else if ( k[76] ) {
+                smartkeys_master_vars.currentCombo += 'larry'
             } else {
 				smartkeys_master_vars.currentCombo = '';
             }
@@ -48,6 +50,9 @@
                 return;
             } else if ( smartkeys_master_vars.currentCombo === 'jetjetjet' ) {
                 jetPrompt();
+                return;
+            } else if ( smartkeys_master_vars.currentCombo === 'larrylarry' ) {
+                larryBird();
                 return;
             }
 
@@ -67,6 +72,16 @@
     If input is empty or not in accepted array, give them another chance.
     If the prompt is accepted, do something.
      */
+    function larryBird() {
+        currentCombo = ''; // resets currentCombo
+
+        $( '.thickbox.larry-bird' ).click();
+        $( '#larry-command' ).focus().val('');
+        //$( 'input#larry-commant' ).select();
+
+    }
+
+
     function smartPrompt() {
 		smartkeys_master_vars.currentCombo = ''; // resets currentCombo
         var newTab     = '_self';
@@ -111,8 +126,9 @@
      If the prompt is accepted, do something.
      */
     function jetPrompt() {
-        smartkeys_master_vars.currentCombo = ''; // resets currentCombo
+		currentCombo = ''; // resets currentCombo
         var newTab     = '_self';
+        var userInput  = '';
         var userInput  = prompt( 'Blast off where? \n\n' + jetpackCommands.command.join().replace(/,/g, "\n" ) );
         var hasNew     = userInput.search( /(new)/ );
         var isAccepted = false;

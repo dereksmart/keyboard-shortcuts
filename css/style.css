@@ -1,3 +1,14 @@
+#larry-bird-content {
+    width: 100%;
+    height: 100%;
+    background-image: url( '../images/larry_bird.jpg' );
+    background-size: cover;
+}
+
+#larry-input {
+    width: 100%;
+}
+
 .keys {
     font-weight: bold;
 }

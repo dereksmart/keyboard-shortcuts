@@ -95,6 +95,8 @@ class Smartkeys {
 
 				$module_name[] = $module;
 			}
+		} else {
+			return false;
 		}
 
 		$jp_defaults = array(
@@ -106,6 +108,7 @@ class Smartkeys {
 	}
 
 	function smartkeys_enqueue_admin_keys() {
+		include_once 'larry-bird.php';
 		wp_enqueue_script( 'smartkeys-master', plugin_dir_url( __FILE__ ) . 'js/smartkeys-master.js', array( 'jquery', 'underscore' ), false );
 		wp_localize_script( 'smartkeys-master', 'smartkeys_master_vars',
 			array(

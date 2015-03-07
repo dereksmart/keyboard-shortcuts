@@ -53,12 +53,13 @@ class Smartkeys_Admin {
 
 		wp_enqueue_style( 'smartkeys-css' );
 	}
-	
+
 	// Include view file for settings
 	function render_smartkeys_main_page() {
-		include 'views/admin-settings.php';
+//		include_once 'larry-bird.php';
+		include_once 'views/admin-settings.php';
 	}
-	
+
 	// Save the settings
 	function smartkeys_save_settings() {
 		if ( isset( $_POST['smartkeys_save_nonce'] ) && wp_verify_nonce( $_POST['smartkeys_save_nonce'], 'smartkeys_save' ) ) {
