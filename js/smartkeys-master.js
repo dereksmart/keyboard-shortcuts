@@ -1,4 +1,4 @@
-(function($) {
+(function($, command, action) {
     var k = []; // The pressed key
 
     /*
@@ -82,18 +82,19 @@
 
     function searchInit() {
         // Search commands
-        $('#larry-input').on('keyup search', function () {
-            var term = $(this).val();
-            smartSearch(term);
-        });
-        // prevent the form from
-        $('#larry-search').on('submit', function (event) {
-            event.preventDefault();
+        $( '#larry-input' ).on( 'keydown search', function ( event ) {
+            var code = event.keyCode;
+
+            // We want to be able to arrow through the dropdown (down and up)
+            if ( ! code[40] || ! code[38] ) {
+                var term = $(this).val();
+                smartSearch(term);
+            }
         });
     }
 
     function smartSearch( term ) {
-        var html = '', backupResults = '', i, command, searchTerm, action;
+        var htmlList = '', backupResults = '', inputList = '', i, searchTerm;
 
         for ( i = 0; i < commandsActions.length; i++ ) {
             command    = commandsActions[i].name;
@@ -113,17 +114,19 @@
 
             // If there are any matches in the word, show it.
             if ( command.indexOf( searchTerm ) !== -1 ) {
-                html += '<li class="smart-result"><a href="' + action + '">' + commandsActions[i].name + '</a></li>';
+                htmlList  += '<li class="smart-result"><a href="' + action + '">' + commandsActions[i].name + '</a></li>';
+                inputList += '<option value="' + commandsActions[i].name + '">';
+                $( '#larry-bird-form-list' ).html( inputList );
             }
 
             // Spit out the results
-            $( '#smart-results' ).html( html );
+            $( '#smart-results' ).html( htmlList );
             $( '#backup-results').html( backupResults );
         }
 
         // Larry can't find it :(
         // At least he tries to help.
-        if ( '' === html ) {
+        if ( '' === htmlList ) {
             $( '#for-the-three' ).hide();
             $( '#smart-results' ).html( '<span class="smart-result">Larry can\'t find ' + term
                 + '</span><br><h3>Examples: </h3>' + command
@@ -137,6 +140,7 @@
             });
         }
 
+        // Listen for the form to be submitted
         var form = document.getElementById( 'larry-bird-form' );
         if ( form.attachEvent) {
             form.attachEvent( "submit", processForm );
@@ -147,9 +151,19 @@
 
     // Process the form
     function processForm(e) {
-        if (e.preventDefault) e.preventDefault();
+        if ( e.preventDefault ) e.preventDefault();
+        var input = $( '#larry-input').val(), i;
+        var url = '';
 
-        console.log( $( '#larry-input').val() );
+        // Find the action based on the input
+        _.each( commandsActions, function( cmdAct ) {
+            if ( cmdAct.name == input ) {
+                url += cmdAct.action;
+            }
+        });
+
+        // Navigate to the page!
+        window.location.href = smartkeys_master_vars.home_url + '/wp-admin/' + url;
 
         // You must return false to prevent the default form behavior
         return false;
