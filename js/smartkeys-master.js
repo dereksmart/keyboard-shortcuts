@@ -37,11 +37,11 @@
 
             // J is the magic key, press thrice to unlock smartness
             if ( e.shiftKey ) {
-				smartkeys_master_vars.currentCombo += 'go';
+                smartkeys_master_vars.currentCombo += 'larry';
+				//smartkeys_master_vars.currentCombo += 'go';
             } else if ( k[74] ) {
 				smartkeys_master_vars.currentCombo += 'jet'
             } else if ( k[17] ) {
-                smartkeys_master_vars.currentCombo += 'larry'
             } else {
 				smartkeys_master_vars.currentCombo = '';
             }
@@ -109,11 +109,12 @@
                 $( '#smart-results, #for-the-three').show();
                 $( '#backup-results').hide();
             } else {
-                $( '#for-the-three').hide();
+                $( '#smart-results, #for-the-three').hide();
             }
 
             // If there are any matches in the word, show it.
             if ( command.indexOf( searchTerm ) !== -1 ) {
+                // Check for a " new" tab requested and strip it from the input
                 htmlList  += '<li class="smart-result"><a href="' + action + '">' + commandsActions[i].name + '</a></li>';
                 inputList += '<option value="' + commandsActions[i].name + '">';
                 $( '#larry-bird-form-list' ).html( inputList );

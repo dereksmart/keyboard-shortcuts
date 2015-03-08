@@ -3,17 +3,18 @@
 Adds keyboard shortcuts to your WordPress website, <br />
 with the ability to customize and create your own (coming soon)
 
-# WordPress Shortcuts:
-| Action  | Keys |
-| :------------- | :------------- |
-| New Post  | cmd + shift + s  |
+# Tap "shift" 2x to summon Larry!
+And then just tell him where you want to go.
+To open in a new page, type " new" after your search ( that's [space]new ) - coming soon also
 
-# Jetpack Shortcuts:
-| Action  | Keys |
+Keyboard Shortcuts (coming soon maybe)
+| Command  | Action |
 | :------------- | :------------- |
 | Navigate to Jetpack Settings  | j + e + t  |
 | Omnisearch | cmd + shift + s|
 
-
-# Larry Bird for the 3!!!
-Or, you can use Larry Bird - He'll help you get around. Just press shift 3x and tell him where to go.
+Jetpack Shortcuts: (coming soon maybe)
+| Action  | Keys |
+| :------------- | :------------- |
+| Navigate to Jetpack Settings  | j + e + t  |
+| Omnisearch | cmd + shift + s|
