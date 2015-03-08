@@ -109,7 +109,7 @@
                 $( '#smart-results, #for-the-three').show();
                 $( '#backup-results').hide();
             } else {
-                $( '#smart-results, #for-the-three').hide();
+                $( '#for-the-three').hide();
             }
 
             // If there are any matches in the word, show it.
