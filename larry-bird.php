@@ -15,13 +15,13 @@ add_thickbox();
             <form id="larry-bird-form" action="" method="post">
                 <input type="text" id="larry-input" list="larry-bird-form-list" />
                 <datalist id="larry-bird-form-list"></datalist>
-                <button type="submit" id="for-the-three">For the Three!</button>
+                <button type="submit" id="for-the-three" style="display: none;">For the Three!</button>
             </form>
-            <p>or press shift to see your options</p>
+            <a class="see-all">see all</a>
         </div>
         <!-- js target for resutls -->
         <ul id="smart-results"></ul>
-        <ul id="backup-results"></ul>
+        <ul id="backup-results" style="display: none;"></ul>
     </div>
 </div>
 

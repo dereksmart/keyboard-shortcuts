@@ -7,7 +7,7 @@
     var commandsActions = smartkeys_master_vars.prompt_commands;
     //var jetpackCommands = smartkeys_master_vars.jetpack_commands;
 
-    console.log( commandsActions );
+    //console.log( commandsActions );
 
     // Init
     $(document).ready(function () {
@@ -39,20 +39,11 @@
             if ( e.shiftKey ) {
                 smartkeys_master_vars.currentCombo += 'larry';
 				//smartkeys_master_vars.currentCombo += 'go';
-            } else if ( k[74] ) {
-				smartkeys_master_vars.currentCombo += 'jet'
-            } else if ( k[17] ) {
             } else {
 				smartkeys_master_vars.currentCombo = '';
             }
-            // The magic key was pressed thrice! gogogo!
-            if ( smartkeys_master_vars.currentCombo === 'gogogo' ) {
-                //smartPrompt();
-                //return;
-            } else if ( smartkeys_master_vars.currentCombo === 'jetjetjet' ) {
-                //jetPrompt();
-                //return;
-            } else if ( smartkeys_master_vars.currentCombo === 'larrylarry' ) {
+            // Larry has been summoned
+            if ( smartkeys_master_vars.currentCombo === 'larrylarry' ) {
                 larryBird();
                 return;
             }
@@ -81,6 +72,13 @@
     }
 
     function searchInit() {
+        var backupResults = '';
+
+        _.each( commandsActions, function( cmd ) {
+            backupResults +='<li class="smart-result"><a href="' + action + '">' + cmd.name + '</a></li>';
+            $( '#backup-results' ).html( backupResults );
+        });
+
         // Search commands
         $( '#larry-input' ).on( 'keydown search', function ( event ) {
             var code = event.keyCode;
@@ -90,6 +88,10 @@
                 var term = $(this).val();
                 smartSearch(term);
             }
+        });
+
+        $( '.see-all' ).click( function() {
+            $( '#backup-results' ).toggle();
         });
     }
 
@@ -101,15 +103,11 @@
             action     = commandsActions[i].action;
             searchTerm = term.toLowerCase();
 
-            // Build the backup results? there's a better way here.
-            backupResults += '<li class="smart-result"><a href="' + action + '">' + commandsActions[i].name + '</a></li>';
-
             // Only show submit and results when they start typing
             if ( searchTerm.length >= 1 ) {
-                $( '#smart-results, #for-the-three').show();
-                $( '#backup-results').hide();
+                $( '#for-the-three' ).show();
             } else {
-                $( '#smart-results, #for-the-three').hide();
+                $( '#for-the-three' ).hide();
             }
 
             // If there are any matches in the word, show it.
@@ -122,7 +120,6 @@
 
             // Spit out the results
             $( '#smart-results' ).html( htmlList );
-            $( '#backup-results').html( backupResults );
         }
 
         // Larry can't find it :(
