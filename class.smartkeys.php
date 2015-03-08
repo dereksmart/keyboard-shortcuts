@@ -15,6 +15,8 @@ class Smartkeys {
 	}
 
 	function __construct() {
+		// Register scripts
+		add_action( 'init', array( $this, 'smartkeys_register_assets' ) );
 
 		if ( is_user_logged_in() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'smartkeys_enqueue_admin_keys' ) );
@@ -23,6 +25,10 @@ class Smartkeys {
 			add_action( 'wp_enqueue_scripts',    array( $this, 'smartkeys_enqueue_visitor_keys' ) );
 		}
 
+	}
+
+	function smartkeys_register_assets() {
+		wp_register_style( 'smartkeys-css', plugins_url( 'css/style.css' , __FILE__ ) );
 	}
 
 	/*

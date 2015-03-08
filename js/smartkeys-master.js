@@ -39,7 +39,7 @@
 				smartkeys_master_vars.currentCombo += 'go';
             } else if ( k[74] ) {
 				smartkeys_master_vars.currentCombo += 'jet'
-            } else if ( k[76] ) {
+            } else if ( k[17] ) {
                 smartkeys_master_vars.currentCombo += 'larry'
             } else {
 				smartkeys_master_vars.currentCombo = '';
@@ -75,10 +75,10 @@
     function larryBird() {
         currentCombo = ''; // resets currentCombo
 
-        $( '.thickbox.larry-bird' ).click();
-        $( '#larry-command' ).focus().val('');
-        //$( 'input#larry-commant' ).select();
+        var input = $( '#larry-input' );
 
+        $( '.larry-bird' ).click();
+        $( 'input#larry-input' ).select();
     }
 
 
@@ -88,8 +88,6 @@
         var userInput  = prompt( 'Where do you want to go? \n\n' + commandsActions.command.join().replace(/,/g, "\n" ) );
         var hasNew     = userInput.search( /(new)/ );
         var isAccepted = false;
-
-
 
         // Check for a " new" tab requested and strip it from the input
         if ( hasNew > -1 && endsWith( userInput, ' new' ) ) {

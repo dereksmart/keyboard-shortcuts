@@ -7,20 +7,12 @@
 class Smartkeys_Admin {
 	
 	function __construct() {
-		// Register scripts
-		add_action( 'admin_init', array( $this, 'smartkeys_register_assets' ) );
-
 		// Set up the admin page in menu
 		add_action( 'admin_menu', array( $this, 'smartkeys_register_admin_page' ), 1 );
 		
 		// Save changes
 		add_action( 'admin_init', array( $this, 'smartkeys_save_settings' )  );
 	}
-	
-	function smartkeys_register_assets() {
-		wp_register_style( 'smartkeys-css', plugins_url( 'css/style.css' , __FILE__ ) );
-	}
-	
 
 	/*
 	 * Register Settings Page
