@@ -5,13 +5,14 @@
     Accepted Commands
      */
     var commandsActions = smartkeys_master_vars.prompt_commands;
-    var jetpackCommands = smartkeys_master_vars.jetpack_commands;
+    //var jetpackCommands = smartkeys_master_vars.jetpack_commands;
 
-    //console.log(jetpackCommands);
+    console.log( commandsActions );
 
     // Init
     $(document).ready(function () {
         trackKeys();
+        searchInit();
     });
 
     // Little function to check if a string ends with something
@@ -46,24 +47,24 @@
             }
             // The magic key was pressed thrice! gogogo!
             if ( smartkeys_master_vars.currentCombo === 'gogogo' ) {
-                smartPrompt();
-                return;
+                //smartPrompt();
+                //return;
             } else if ( smartkeys_master_vars.currentCombo === 'jetjetjet' ) {
-                jetPrompt();
-                return;
+                //jetPrompt();
+                //return;
             } else if ( smartkeys_master_vars.currentCombo === 'larrylarry' ) {
                 larryBird();
                 return;
             }
 
-            keyboardShortcuts();
+            //keyboardShortcuts();
         };
 
         onkeyup = function(e){
             e = e || event; // deal with IE
             k[e.keyCode] = e.type == 'keydown';
 
-            keyboardShortcuts();
+            //keyboardShortcuts();
         };
     }
 
@@ -73,15 +74,88 @@
     If the prompt is accepted, do something.
      */
     function larryBird() {
-        currentCombo = ''; // resets currentCombo
-
-        var input = $( '#larry-input' );
+        smartkeys_master_vars.currentCombo = '';
 
         $( '.larry-bird' ).click();
         $( 'input#larry-input' ).select();
     }
 
+    function searchInit() {
+        // Search commands
+        $('#larry-input').on('keyup search', function () {
+            var term = $(this).val();
+            smartSearch(term);
+        });
+        // prevent the form from
+        $('#larry-search').on('submit', function (event) {
+            event.preventDefault();
+        });
+    }
 
+    function smartSearch( term ) {
+        var html = '', backupResults = '', i, command, searchTerm, action;
+
+        for ( i = 0; i < commandsActions.length; i++ ) {
+            command    = commandsActions[i].name;
+            action     = commandsActions[i].action;
+            searchTerm = term.toLowerCase();
+
+            // Build the backup results? there's a better way here.
+            backupResults += '<li class="smart-result"><a href="' + action + '">' + commandsActions[i].name + '</a></li>';
+
+            // Only show submit and results when they start typing
+            if ( searchTerm.length >= 1 ) {
+                $( '#smart-results, #for-the-three').show();
+                $( '#backup-results').hide();
+            } else {
+                $( '#smart-results, #for-the-three').hide();
+            }
+
+            // If there are any matches in the word, show it.
+            if ( command.indexOf( searchTerm ) !== -1 ) {
+                html += '<li class="smart-result"><a href="' + action + '">' + commandsActions[i].name + '</a></li>';
+            }
+
+            // Spit out the results
+            $( '#smart-results' ).html( html );
+            $( '#backup-results').html( backupResults );
+        }
+
+        // Larry can't find it :(
+        // At least he tries to help.
+        if ( '' === html ) {
+            $( '#for-the-three' ).hide();
+            $( '#smart-results' ).html( '<span class="smart-result">Larry can\'t find ' + term
+                + '</span><br><h3>Examples: </h3>' + command
+                + '<br><a class="see-all" style="cursor: pointer">see all</a>' );
+
+            // Show the backup results.
+            $( '.see-all' ).click( function() {
+                $( '#backup-results').show();
+                $( '#smart-results, #for-the-three').hide();
+                $( 'input#larry-input' ).val('').select();
+            });
+        }
+
+        var form = document.getElementById( 'larry-bird-form' );
+        if ( form.attachEvent) {
+            form.attachEvent( "submit", processForm );
+        } else {
+            form.addEventListener( "submit", processForm );
+        }
+    }
+
+    // Process the form
+    function processForm(e) {
+        if (e.preventDefault) e.preventDefault();
+
+        console.log( $( '#larry-input').val() );
+
+        // You must return false to prevent the default form behavior
+        return false;
+    }
+
+/*
     function smartPrompt() {
 		smartkeys_master_vars.currentCombo = ''; // resets currentCombo
         var newTab     = '_self';
@@ -114,7 +188,7 @@
             window.open( smartkeys_master_vars.home_url + "/wp-admin/" + action, newTab );
         }
     }
-
+*/
 
     /*
      Jetpack Commands!!!
@@ -123,6 +197,7 @@
      If input is empty or not in accepted array, give them another chance.
      If the prompt is accepted, do something.
      */
+/*
     function jetPrompt() {
 		currentCombo = ''; // resets currentCombo
         var newTab     = '_self';
@@ -186,6 +261,6 @@
             k = [];
         }
     }
-
+*/
 })(jQuery);
 

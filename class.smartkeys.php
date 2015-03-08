@@ -51,8 +51,7 @@ class Smartkeys {
 		}
 		*/
 
-		$menu_name = array();
-		$menu_url  = array();
+		$defaults  = array();
 		if ( is_array( $menu ) ) {
 			foreach ( $menu as $k => $v ) {
 				// If a plugin adds a top-level menu, make sure we can get to it.
@@ -67,23 +66,20 @@ class Smartkeys {
 
 				// We don't want to add separators here.
 				if ( $v[4] !== 'wp-menu-separator' ) {
-					$menu_name[] = strtolower( $v[0] );
-					$menu_url[]  = $v[2];
+					$defaults[]  = array(
+						'name'   => strtolower( $v[0] ),
+						'action' => $v[2]
+					);
 				}
 			}
 		}
-
-		$defaults = array(
-			'command' => $menu_name,
-			'action'  => $menu_url
-		);
 
 		// Only update in admin because global $menu is not available outside of admin
 		if ( is_admin() ) {
 			update_option( 'smartkey_commands', $defaults );
 		}
 
-		$default_commands = get_option('smartkey_commands');
+		$default_commands = get_option( 'smartkey_commands' );
 
 		return $default_commands;
 	}
