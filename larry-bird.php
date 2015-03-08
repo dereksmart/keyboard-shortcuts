@@ -17,11 +17,11 @@ add_thickbox();
                 <datalist id="larry-bird-form-list"></datalist>
                 <button type="submit" id="for-the-three">For the Three!</button>
             </form>
+            <p>or press shift to see your options</p>
         </div>
         <!-- js target for resutls -->
         <ul id="smart-results"></ul>
         <ul id="backup-results"></ul>
-
     </div>
 </div>
 
@@ -59,6 +59,11 @@ add_thickbox();
     }
     .smart-result a:hover {
         color: #333333 !important;
+    }
+
+    .see-all {
+        font-size: 12px;
+        color: #000;
     }
 
     #TB_window {
