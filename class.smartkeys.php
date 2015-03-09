@@ -31,6 +31,7 @@ class Smartkeys {
 		wp_register_style( 'smartkeys-css', plugins_url( 'css/style.css' , __FILE__ ) );
 	}
 
+
 	/*
 	 * Handle WordPress commands
 	 * @return array
@@ -38,20 +39,7 @@ class Smartkeys {
 	function smartkeys_prompt_commands() {
 		global $menu, $submenu;
 
-		/*
-		$submenu_name = array();
-		$submenu_url  = array();
-		if ( is_array( $submenu ) ) {
-			foreach ( $submenu as $k => $submenu_group ) {
-				foreach( $submenu_group as $submenu_item ) {
-					$submenu_name[] = $submenu_item[0];
-					$submenu_url[]  = $submenu_item[2];
-				}
-			}
-		}
-		*/
-
-		$defaults  = array();
+		$menu_slugs  = array();
 		if ( is_array( $menu ) ) {
 			foreach ( $menu as $k => $v ) {
 				// If a plugin adds a top-level menu, make sure we can get to it.
@@ -66,17 +54,48 @@ class Smartkeys {
 
 				// We don't want to add separators here.
 				if ( $v[4] !== 'wp-menu-separator' ) {
-					$defaults[]  = array(
-						'name'   => strtolower( $v[0] ),
-						'action' => $v[2]
+					$menu_slugs[$v[2] . ' - ' . $v[0]]  = array(
+//						'slug'    => $v[1],
+						'parent'  => $v[2],
+						'parenty' => 1,
+						'name'    => $v[0],
+						'command' => strtolower( $v[0] ),
+						'action'  => $v[2],
 					);
 				}
 			}
 		}
 
+		// Submenu slugs
+		$submenu_slugs = array();
+		if ( is_array( $submenu ) ) {
+			foreach ( $submenu as $k => $group ) {
+				foreach( $group as $g ) {
+					$submenu_slugs[$k. ' - ' . $g[0]] = array(
+//						'slug' => $g[1],
+						'parent' => $k,
+						'parenty' => 0,
+						'name'    => $g[0],
+						'command' => strtolower( $g[0] ),
+						'action'  => $g[2],
+					);
+				}
+			}
+		}
+
+		// Merge them all and sort
+		$all = array_merge_recursive( $menu_slugs, $submenu_slugs );
+		foreach ( $all as $row ) {
+			foreach ( $row as $key => $value ) {
+				${$key}[] = $value;
+			}
+		}
+
+		array_multisort( $parent, SORT_ASC, $parenty, SORT_DESC, $all );
+		
 		// Only update in admin because global $menu is not available outside of admin
 		if ( is_admin() ) {
-			update_option( 'smartkey_commands', $defaults );
+			update_option( 'smartkey_commands', $all );
 		}
 
 		$default_commands = get_option( 'smartkey_commands' );

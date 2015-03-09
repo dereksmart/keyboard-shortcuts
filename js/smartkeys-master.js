@@ -7,7 +7,7 @@
     var commandsActions = smartkeys_master_vars.prompt_commands;
     //var jetpackCommands = smartkeys_master_vars.jetpack_commands;
 
-    //console.log( commandsActions );
+    console.log( commandsActions );
 
     // Init
     $(document).ready(function () {
@@ -98,6 +98,41 @@
     function smartSearch( term ) {
         var htmlList = '', backupResults = '', inputList = '', i, searchTerm;
 
+        parenttt = _.where( commandsActions, {parenty: 1} );
+
+        _.each( commandsActions, function(cmdAct) {
+            parenty    = cmdAct.parenty;
+            parent     = cmdAct.parent;
+            name       = cmdAct.name;
+            command    = cmdAct.command;
+            action     = cmdAct.action;
+            searchTerm = term.toLowerCase();
+
+            if ( 1 == parenty ) {
+                parent = name;
+            }
+
+
+            // Only show submit and results when they start typing
+            //if ( searchTerm.length >= 1 ) {
+            //    $( '#for-the-three' ).show();
+            //} else {
+            //    $( '#for-the-three' ).hide();
+            //}
+
+            // If there are any matches in the word, show it.
+            if ( command.indexOf( searchTerm ) !== -1 ) {
+                // Check for a " new" tab requested and strip it from the input
+                htmlList  += '<li class="smart-result">' + parent + '<br><a href="' + action + '">' + command + '</a></li>';
+                //inputList += '<option value="' + action + '">';
+                //$( '#larry-bird-form-list' ).html( inputList );
+            }
+
+            // Spit out the results
+            $( '#smart-results' ).html( htmlList );
+        });
+
+/*
         for ( i = 0; i < commandsActions.length; i++ ) {
             command    = commandsActions[i].name;
             action     = commandsActions[i].action;
@@ -121,7 +156,7 @@
             // Spit out the results
             $( '#smart-results' ).html( htmlList );
         }
-
+*/
         // Larry can't find it :(
         // At least he tries to help.
         if ( '' === htmlList ) {
