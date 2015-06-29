@@ -102,9 +102,21 @@ class Smartkeys {
 	function smartkeys_prompt_commands() {
 		global $submenu;
 
-		echo '<pre>';
-		print_r( $this->smartkeys_get_sub_menu_pages() );
-		echo '</pre>';
+		foreach ( $submenu as $index => $pages ) {
+			$first = true;
+
+			foreach ( $pages as $page ) {
+				if ( $first ) {
+					echo $index . ' - ';
+					$first = false;
+				}
+
+				echo '<pre>';
+				print_r( $page );
+				echo '</pre>';
+			}
+		}
+
 		exit;
 		/*
 		// Merge them all and sort
@@ -134,6 +146,10 @@ class Smartkeys {
 	 * @return array
 	 */
 	function smartkeys_jetpack_prompt_commands() {
+		if ( ! class_exists( 'Jetpack' ) ) {
+			return false;
+		}
+
 		if ( Jetpack::is_active() ) {
 			$modules = Jetpack::get_available_modules();
 
@@ -159,13 +175,17 @@ class Smartkeys {
 	}
 
 	function smartkeys_enqueue_admin_keys() {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		include_once 'larry-bird.php';
 		wp_enqueue_script( 'smartkeys-master', plugin_dir_url( __FILE__ ) . 'js/smartkeys-master.js', array( 'jquery', 'underscore' ), false );
 		wp_localize_script( 'smartkeys-master', 'smartkeys_master_vars',
 			array(
 				'home_url'         => home_url(),
 				'option_keycodes'  => get_option( 'keys_to_save' ),
-//				'prompt_commands'  => $this->smartkeys_prompt_commands(),
+				'prompt_commands'  => $this->smartkeys_prompt_commands(),
 				'jetpack_commands' => $this->smartkeys_jetpack_prompt_commands(),
 				'currentCombo'   => '',
 			)
