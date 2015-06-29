@@ -4,10 +4,11 @@
     /*
     Accepted Commands
      */
-    var commandsActions = smartkeys_master_vars.prompt_commands;
-    //var jetpackCommands = smartkeys_master_vars.jetpack_commands;
+    var data = smartkeys_master_vars.prompt_commands;
 
-    console.log( commandsActions );
+    _.each( data, function(cmdAct) {
+        console.log( cmdAct.parent );
+    });
 
     // Init
     $(document).ready(function () {
@@ -74,8 +75,8 @@
     function searchInit() {
         var backupResults = '';
 
-        _.each( commandsActions, function( cmd ) {
-            backupResults +='<li class="smart-result"><a href="' + action + '">' + cmd.name + '</a></li>';
+        _.each( data, function( cmd ) {
+            backupResults +='<li class="smart-result"><a href="' + action + '">' + cmd.parent + '</a></li>';
             $( '#backup-results' ).html( backupResults );
         });
 
@@ -98,20 +99,12 @@
     function smartSearch( term ) {
         var htmlList = '', backupResults = '', inputList = '', i, searchTerm;
 
-        parenttt = _.where( commandsActions, {parenty: 1} );
-
-        _.each( commandsActions, function(cmdAct) {
-            parenty    = cmdAct.parenty;
+        _.each( data, function(cmdAct) {
             parent     = cmdAct.parent;
-            name       = cmdAct.name;
-            command    = cmdAct.command;
-            action     = cmdAct.action;
+            //name       = cmdAct.name;
+            //command    = cmdAct.command;
+            //action     = cmdAct.action;
             searchTerm = term.toLowerCase();
-
-            if ( 1 == parenty ) {
-                parent = name;
-            }
-
 
             // Only show submit and results when they start typing
             //if ( searchTerm.length >= 1 ) {
@@ -123,7 +116,7 @@
             // If there are any matches in the word, show it.
             if ( command.indexOf( searchTerm ) !== -1 ) {
                 // Check for a " new" tab requested and strip it from the input
-                htmlList  += '<li class="smart-result">' + parent + '<br><a href="' + action + '">' + command + '</a></li>';
+                htmlList  += '<li class="smart-result">' + parent + '<br><a href="' + action + '">' + cmdAct.group + '</a></li>';
                 //inputList += '<option value="' + action + '">';
                 //$( '#larry-bird-form-list' ).html( inputList );
             }
@@ -133,9 +126,9 @@
         });
 
 /*
-        for ( i = 0; i < commandsActions.length; i++ ) {
-            command    = commandsActions[i].name;
-            action     = commandsActions[i].action;
+        for ( i = 0; i < data.length; i++ ) {
+            command    = data[i].name;
+            action     = data[i].action;
             searchTerm = term.toLowerCase();
 
             // Only show submit and results when they start typing
@@ -148,8 +141,8 @@
             // If there are any matches in the word, show it.
             if ( command.indexOf( searchTerm ) !== -1 ) {
                 // Check for a " new" tab requested and strip it from the input
-                htmlList  += '<li class="smart-result"><a href="' + action + '">' + commandsActions[i].name + '</a></li>';
-                inputList += '<option value="' + commandsActions[i].name + '">';
+                htmlList  += '<li class="smart-result"><a href="' + action + '">' + data[i].name + '</a></li>';
+                inputList += '<option value="' + data[i].name + '">';
                 $( '#larry-bird-form-list' ).html( inputList );
             }
 
@@ -162,7 +155,7 @@
         if ( '' === htmlList ) {
             $( '#for-the-three' ).hide();
             $( '#smart-results' ).html( '<span class="smart-result">Larry can\'t find ' + term
-                + '</span><br><h3>Examples: </h3>' + command
+                + '</span><br><h3>Examples: </h3>' + 'command'
                 + '<br><a class="see-all" style="cursor: pointer">see all</a>' );
 
             // Show the backup results.
@@ -189,7 +182,7 @@
         var url = '';
 
         // Find the action based on the input
-        _.each( commandsActions, function( cmdAct ) {
+        _.each( data, function( cmdAct ) {
             if ( cmdAct.name == input ) {
                 url += cmdAct.action;
             }
@@ -206,7 +199,7 @@
     function smartPrompt() {
 		smartkeys_master_vars.currentCombo = ''; // resets currentCombo
         var newTab     = '_self';
-        var userInput  = prompt( 'Where do you want to go? \n\n' + commandsActions.command.join().replace(/,/g, "\n" ) );
+        var userInput  = prompt( 'Where do you want to go? \n\n' + data.command.join().replace(/,/g, "\n" ) );
         var hasNew     = userInput.search( /(new)/ );
         var isAccepted = false;
 
@@ -216,7 +209,7 @@
             userInput = userInput.replace( ' new' , '' );
         }
 
-        if ( _.contains( commandsActions.command, userInput ) ) {
+        if ( _.contains( data.command, userInput ) ) {
             isAccepted = true;
         }
 
@@ -229,8 +222,8 @@
 
         // Woot! Command accepted: do something
         if ( isAccepted ) {
-            var commandKey = _.indexOf( commandsActions.command, userInput );
-            var action = commandsActions.action[commandKey];
+            var commandKey = _.indexOf( data.command, userInput );
+            var action = data.action[commandKey];
 
             window.open( smartkeys_master_vars.home_url + "/wp-admin/" + action, newTab );
         }

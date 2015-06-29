@@ -47,6 +47,12 @@ class Smartkeys {
 
 		foreach ( $menu as $page => $values ) {
 			if ( $path == $values[2] ) {
+
+				// Some menu items have span tags in them, let's remove the number
+				if ( preg_match( '/(>\d{1,3}<)/', $values[0], $match ) ) {
+					$values[0] = wp_strip_all_tags( str_replace( $match, '', $values[0] ) );
+				}
+
 				return $values[0];
 			}
 		}
@@ -62,7 +68,7 @@ class Smartkeys {
 	function smartkeys_organized_pages() {
 		global $submenu;
 
-		$total = array();
+		$all_pages = array();
 
 		foreach ( $submenu as $index => $pages ) {
 			$first = true;
@@ -71,15 +77,18 @@ class Smartkeys {
 			$group = array();
 			foreach ( $pages as $page ) {
 				if ( $first ) {
-					echo $title . ' - ';
 					$first = false;
 				}
+				// $page[0] is the title of the page
 				$group[ $page[0] ] = $page;
-				$total[ $title ] = $group;
+				$all_pages[] = array(
+					'parent'    => $title,
+					'sub_pages' => $group,
+				);
 			}
 		}
 
-		return $total;
+		return $all_pages;
 	}
 
 	function smartkeys_enqueue_admin_keys() {
@@ -91,20 +100,11 @@ class Smartkeys {
 		wp_enqueue_script( 'smartkeys-master', plugin_dir_url( __FILE__ ) . 'js/smartkeys-master.js', array( 'jquery', 'underscore' ), false );
 		wp_localize_script( 'smartkeys-master', 'smartkeys_master_vars',
 			array(
-				'home_url'         => home_url(),
-				'option_keycodes'  => get_option( 'keys_to_save' ),
-				'prompt_commands'  => $this->smartkeys_organized_pages(),
-				'currentCombo'   => '',
+				'home_url'        => home_url(),
+				'option_keycodes' => get_option( 'keys_to_save' ),
+				'prompt_commands' => $this->smartkeys_organized_pages(),
+				'currentCombo'    => '',
 			)
 		);
 	}
-
-	function smartkeys_enqueue_visitor_keys() {
-		wp_localize_script( 'smartkeys', 'smartkeys_vars',
-			array(
-				'home_url' => home_url()
-			)
-		);
-	}
-
 }
