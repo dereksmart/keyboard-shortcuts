@@ -4,10 +4,11 @@
     /*
     Accepted Commands
      */
-    var data = smartkeys_master_vars.prompt_commands;
+    var data     = smartkeysMasterVars.adminPages;
+    var adminUrl = smartkeysMasterVars.adminUrl;
 
     _.each( data, function(cmdAct) {
-        console.log( cmdAct.parent );
+        console.log( cmdAct );
     });
 
     // Init

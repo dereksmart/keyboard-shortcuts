@@ -98,12 +98,12 @@ class Smartkeys {
 
 		include_once 'larry-bird.php';
 		wp_enqueue_script( 'smartkeys-master', plugin_dir_url( __FILE__ ) . 'js/smartkeys-master.js', array( 'jquery', 'underscore' ), false );
-		wp_localize_script( 'smartkeys-master', 'smartkeys_master_vars',
+		wp_localize_script( 'smartkeys-master', 'smartkeysMasterVars',
 			array(
-				'home_url'        => home_url(),
-				'option_keycodes' => get_option( 'keys_to_save' ),
-				'prompt_commands' => $this->smartkeys_organized_pages(),
-				'currentCombo'    => '',
+				'adminUrl'     => get_admin_url( get_current_blog_id() ),
+				'optionKeys'   => get_option( 'keys_to_save' ),
+				'adminPages'   => $this->smartkeys_organized_pages(),
+				'currentCombo' => '',
 			)
 		);
 	}
