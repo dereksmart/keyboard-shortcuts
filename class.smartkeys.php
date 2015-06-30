@@ -71,18 +71,14 @@ class Smartkeys {
 		$all_pages = array();
 
 		foreach ( $submenu as $index => $pages ) {
-			$first = true;
 			$title = $this->smartkeys_convert_to_title( $index );
 
 			$group = array();
 			foreach ( $pages as $page ) {
-				if ( $first ) {
-					$first = false;
-				}
+
 				// $page[0] is the title of the page
 				$group[ $page[0] ] = $page;
-				$all_pages[] = array(
-					'parent'    => $title,
+				$all_pages[ $title ] = array(
 					'sub_pages' => $group,
 				);
 			}

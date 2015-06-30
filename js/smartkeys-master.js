@@ -4,12 +4,9 @@
     /*
     Accepted Commands
      */
-    var data     = smartkeysMasterVars.adminPages;
-    var adminUrl = smartkeysMasterVars.adminUrl;
-
-    _.each( data, function(cmdAct) {
-        console.log( cmdAct );
-    });
+    var adminPages   = smartkeysMasterVars.adminPages;
+    var currentCombo = smartkeysMasterVars.currentCombo;
+    var adminUrl     = smartkeysMasterVars.adminUrl;
 
     // Init
     $(document).ready(function () {
@@ -35,17 +32,17 @@
     function trackKeys() {
         onkeydown = function(e){
             e = e || event; // deal with IE
-            k[e.keyCode] = e.type == 'keydown';
+            k[ e.keyCode ] = e.type == 'keydown';
 
             // J is the magic key, press thrice to unlock smartness
             if ( e.shiftKey ) {
-                smartkeys_master_vars.currentCombo += 'larry';
-				//smartkeys_master_vars.currentCombo += 'go';
+                currentCombo += 'larry';
+				//smartkeysMasterVars.currentCombo += 'go';
             } else {
-				smartkeys_master_vars.currentCombo = '';
+				currentCombo = '';
             }
             // Larry has been summoned
-            if ( smartkeys_master_vars.currentCombo === 'larrylarry' ) {
+            if ( currentCombo === 'larrylarry' ) {
                 larryBird();
                 return;
             }
@@ -67,7 +64,7 @@
     If the prompt is accepted, do something.
      */
     function larryBird() {
-        smartkeys_master_vars.currentCombo = '';
+        currentCombo = '';
 
         $( '.larry-bird' ).click();
         $( 'input#larry-input' ).select();
@@ -76,9 +73,11 @@
     function searchInit() {
         var backupResults = '';
 
-        _.each( data, function( cmd ) {
-            backupResults +='<li class="smart-result"><a href="' + action + '">' + cmd.parent + '</a></li>';
-            $( '#backup-results' ).html( backupResults );
+        _.each( adminPages, function( page ) {
+            _.each( page, function( p ) {
+                backupResults +='<li class="smart-result"><a href="' + adminUrl + '">' + page + '</a></li>';
+                $( '#backup-results' ).html( backupResults );
+            });
         });
 
         // Search commands
@@ -98,13 +97,18 @@
     }
 
     function smartSearch( term ) {
-        var htmlList = '', backupResults = '', inputList = '', i, searchTerm;
+        var htmlList = '', backupResults = '', inputList = '', i, searchTerm, subPageCommands, subTitle = [], subLink, subSlug;
 
-        _.each( data, function(cmdAct) {
-            parent     = cmdAct.parent;
-            //name       = cmdAct.name;
-            //command    = cmdAct.command;
-            //action     = cmdAct.action;
+        _.each( adminPages, function( subs, parent ) {
+
+            // Loop through and build the sub pages
+            // sub[0] = page title, [1] == page slug, [2] == action
+            _.each( subs.sub_pages, function( sub ) {
+                subTitle = sub[0];
+                subSlug  = sub[1];
+                subLink  = adminUrl + sub[2];
+            });
+
             searchTerm = term.toLowerCase();
 
             // Only show submit and results when they start typing
@@ -115,9 +119,11 @@
             //}
 
             // If there are any matches in the word, show it.
-            if ( command.indexOf( searchTerm ) !== -1 ) {
+            if ( subTitle.indexOf( searchTerm ) !== -1 || parent.indexOf( searchTerm ) !== -1 ) {
                 // Check for a " new" tab requested and strip it from the input
-                htmlList  += '<li class="smart-result">' + parent + '<br><a href="' + action + '">' + cmdAct.group + '</a></li>';
+
+                htmlList  += '<li class="smart-result">' + parent + '<br><a href="' + subLink + '">' + subTitle + '</a></li>';
+
                 //inputList += '<option value="' + action + '">';
                 //$( '#larry-bird-form-list' ).html( inputList );
             }
@@ -190,7 +196,7 @@
         });
 
         // Navigate to the page!
-        window.location.href = smartkeys_master_vars.home_url + '/wp-admin/' + url;
+        window.location.href = smartkeysMasterVars.home_url + '/wp-admin/' + url;
 
         // You must return false to prevent the default form behavior
         return false;
@@ -198,7 +204,7 @@
 
 /*
     function smartPrompt() {
-		smartkeys_master_vars.currentCombo = ''; // resets currentCombo
+		smartkeysMasterVars.currentCombo = ''; // resets currentCombo
         var newTab     = '_self';
         var userInput  = prompt( 'Where do you want to go? \n\n' + data.command.join().replace(/,/g, "\n" ) );
         var hasNew     = userInput.search( /(new)/ );
@@ -226,7 +232,7 @@
             var commandKey = _.indexOf( data.command, userInput );
             var action = data.action[commandKey];
 
-            window.open( smartkeys_master_vars.home_url + "/wp-admin/" + action, newTab );
+            window.open( smartkeysMasterVars.home_url + "/wp-admin/" + action, newTab );
         }
     }
 */
@@ -288,7 +294,7 @@
         // Jetpack: Go to settings page -- j / e / t
         if ( k[69] && k[74] && k[84] ) {
             if ( confirm( 'Blast off to the Jetpack Settings Page?' ) ) {
-                window.location.href = smartkeys_master_vars.home_url + "/wp-admin/admin.php?page=jetpack_modules";
+                window.location.href = smartkeysMasterVars.home_url + "/wp-admin/admin.php?page=jetpack_modules";
             }
 
             k = [];
@@ -297,7 +303,7 @@
         // WordPress: Write a new post -- p / o / s / t
         if ( k[79] && k[80] && k[83] && k[84] ) {
             if ( confirm( 'Take me to write a new post' ) ) {
-                window.location.href = smartkeys_master_vars.home_url + "/wp-admin/post-new.php";
+                window.location.href = smartkeysMasterVars.home_url + "/wp-admin/post-new.php";
             }
             k = [];
         }
