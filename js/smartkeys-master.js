@@ -97,36 +97,34 @@
     }
 
     function smartSearch( term ) {
-        var htmlList = '', backupResults = '', inputList = '', i, searchTerm, subPageCommands, subTitle = [], subLink, subSlug;
+        var htmlList = '', backupResults = '', inputList = '', i, searchTerm, subTitle, subLink;
 
         _.each( adminPages, function( subs, parent ) {
 
             // Loop through and build the sub pages
-            // sub[0] = page title, [1] == page slug, [2] == action
+            //sub[0] = page title, [1] == page slug, [2] == action
             _.each( subs.sub_pages, function( sub ) {
-                subTitle = sub[0];
-                subSlug  = sub[1];
-                subLink  = adminUrl + sub[2];
+                subTitle = parent + ' ' + sub[0];
+                linky = adminUrl + sub[2];
+
+                searchTerm = term.toLowerCase();
+
+                // Only show submit and results when they start typing
+                //if ( searchTerm.length >= 1 ) {
+                //    $( '#for-the-three' ).show();
+                //} else {
+                //    $( '#for-the-three' ).hide();
+                //}
+
+                // If there are any matches in the word, show it.
+                if ( subTitle.indexOf( searchTerm ) ) {
+                    // Check for a " new" tab requested and strip it from the input
+
+                    htmlList  += '<a href="' + linky + '">' + subTitle + '</a><br>';
+
+                }
+
             });
-
-            searchTerm = term.toLowerCase();
-
-            // Only show submit and results when they start typing
-            //if ( searchTerm.length >= 1 ) {
-            //    $( '#for-the-three' ).show();
-            //} else {
-            //    $( '#for-the-three' ).hide();
-            //}
-
-            // If there are any matches in the word, show it.
-            if ( subTitle.indexOf( searchTerm ) !== -1 || parent.indexOf( searchTerm ) !== -1 ) {
-                // Check for a " new" tab requested and strip it from the input
-
-                htmlList  += '<li class="smart-result">' + parent + '<br><a href="' + subLink + '">' + subTitle + '</a></li>';
-
-                //inputList += '<option value="' + action + '">';
-                //$( '#larry-bird-form-list' ).html( inputList );
-            }
 
             // Spit out the results
             $( '#smart-results' ).html( htmlList );
