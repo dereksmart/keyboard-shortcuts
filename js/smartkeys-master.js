@@ -73,12 +73,12 @@
     function searchInit() {
         var backupResults = '';
 
-        _.each( adminPages, function( page ) {
-            _.each( page, function( p ) {
-                backupResults +='<li class="smart-result"><a href="' + adminUrl + '">' + page + '</a></li>';
-                $( '#backup-results' ).html( backupResults );
-            });
-        });
+        //_.each( adminPages, function( page ) {
+        //    _.each( page, function( p ) {
+        //        backupResults +='<li class="smart-result"><a href="' + adminUrl + '">' + page + '</a></li>';
+        //        $( '#backup-results' ).html( backupResults );
+        //    });
+        //});
 
         // Search commands
         $( '#larry-input' ).on( 'keydown search', function ( event ) {
@@ -97,7 +97,7 @@
     }
 
     function smartSearch( term ) {
-        var htmlList = '', backupResults = '', inputList = '', i, searchTerm, subTitle, subLink;
+        var htmlList = '', backupResults = '', inputList = '', i, searchTerm, allPages = [], subLink;
 
         _.each( adminPages, function( subs, parent ) {
 
@@ -105,79 +105,49 @@
             //sub[0] = page title, [1] == page slug, [2] == action
             _.each( subs.sub_pages, function( sub ) {
                 subTitle = parent + ' ' + sub[0];
-                linky = adminUrl + sub[2];
+                linky    = adminUrl + sub[2];
 
-                searchTerm = term.toLowerCase();
-
-                // Only show submit and results when they start typing
-                //if ( searchTerm.length >= 1 ) {
-                //    $( '#for-the-three' ).show();
-                //} else {
-                //    $( '#for-the-three' ).hide();
-                //}
-
-                // If there are any matches in the word, show it.
-                if ( subTitle.indexOf( searchTerm ) ) {
-                    // Check for a " new" tab requested and strip it from the input
-
-                    htmlList  += '<a href="' + linky + '">' + subTitle + '</a><br>';
-
-                }
-
+                searchTerm = subTitle.toLowerCase();
+                allPages.push( {searchTerm:searchTerm, linky:linky} );
             });
 
-            // Spit out the results
-            $( '#smart-results' ).html( htmlList );
         });
 
-/*
-        for ( i = 0; i < data.length; i++ ) {
-            command    = data[i].name;
-            action     = data[i].action;
-            searchTerm = term.toLowerCase();
+        filteredPages = _.filter( allPages, function( page ){
+            return page.searchTerm.indexOf( term ) > -1;
+        });
 
-            // Only show submit and results when they start typing
-            if ( searchTerm.length >= 1 ) {
-                $( '#for-the-three' ).show();
-            } else {
-                $( '#for-the-three' ).hide();
-            }
+        _.each( filteredPages, function( page ) {
+            htmlList  += '<a href="' + page.linky + '">' + page.searchTerm + '</a><br>';
+        });
 
-            // If there are any matches in the word, show it.
-            if ( command.indexOf( searchTerm ) !== -1 ) {
-                // Check for a " new" tab requested and strip it from the input
-                htmlList  += '<li class="smart-result"><a href="' + action + '">' + data[i].name + '</a></li>';
-                inputList += '<option value="' + data[i].name + '">';
-                $( '#larry-bird-form-list' ).html( inputList );
-            }
-
-            // Spit out the results
-            $( '#smart-results' ).html( htmlList );
+        if ( term.length > 1 ) {
+            $('#smart-results').html( htmlList + '<br>' );
         }
-*/
+
         // Larry can't find it :(
         // At least he tries to help.
-        if ( '' === htmlList ) {
-            $( '#for-the-three' ).hide();
-            $( '#smart-results' ).html( '<span class="smart-result">Larry can\'t find ' + term
-                + '</span><br><h3>Examples: </h3>' + 'command'
-                + '<br><a class="see-all" style="cursor: pointer">see all</a>' );
-
-            // Show the backup results.
-            $( '.see-all' ).click( function() {
-                $( '#backup-results').show();
-                $( '#smart-results, #for-the-three').hide();
-                $( 'input#larry-input' ).val('').select();
-            });
-        }
-
-        // Listen for the form to be submitted
-        var form = document.getElementById( 'larry-bird-form' );
-        if ( form.attachEvent) {
-            form.attachEvent( "submit", processForm );
-        } else {
-            form.addEventListener( "submit", processForm );
-        }
+        //if ( '' === htmlList ) {
+        //    $( '#for-the-three' ).hide();
+        //    $( '#smart-results' ).html( '<span class="smart-result">Larry can\'t find ' + term
+        //        + '</span><br><h3>Examples: </h3>' + 'command'
+        //        + '<br><a class="see-all" style="cursor: pointer">see all</a>' );
+        //
+        //    // Show the backup results.
+        //    $( '.see-all' ).click( function() {
+        //        $( '#backup-results').show();
+        //        $( '#smart-results, #for-the-three').hide();
+        //        $( 'input#larry-input' ).val('').select();
+        //    });
+        //}
+        //
+        //// Listen for the form to be submitted
+        //var form = document.getElementById( 'larry-bird-form' );
+        //if ( form.attachEvent) {
+        //    form.attachEvent( "submit", processForm );
+        //} else {
+        //    form.addEventListener( "submit", processForm );
+        //}
     }
 
     // Process the form
