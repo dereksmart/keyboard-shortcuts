@@ -97,9 +97,17 @@
     }
 
     function smartSearch( term ) {
-        var htmlList = '', backupResults = '', inputList = '', i, searchTerm, allPages = [], subLink;
+        var htmlList = '', backupResults = '', inputList = '', i, searchTerm, allPages = [], subPages = [], parentPages = [], subLink;
 
         _.each( adminPages, function( subs, parent ) {
+
+            if( Object.prototype.toString.call( subs ) === '[object Array]' ) {
+                parentTitle = subs[0];
+                parentLinky = subs[2];
+
+                searchTerm = parentTitle.toLowerCase();
+                parentPages.push( {searchTerm:searchTerm, linky:parentLinky} );
+            }
 
             // Loop through and build the sub pages
             //sub[0] = page title, [1] == page slug, [2] == action
@@ -108,10 +116,12 @@
                 linky    = adminUrl + sub[2];
 
                 searchTerm = subTitle.toLowerCase();
-                allPages.push( {searchTerm:searchTerm, linky:linky} );
+                subPages.push( {searchTerm:searchTerm, linky:linky} );
             });
 
         });
+
+        allPages = subPages.concat( parentPages );
 
         filteredPages = _.filter( allPages, function( page ){
             return page.searchTerm.indexOf( term ) > -1;
@@ -122,7 +132,8 @@
         });
 
         if ( term.length > 1 ) {
-            $('#smart-results').html( htmlList + '<br>' );
+            $( '#smart-results' ).html( htmlList + '<br>' );
+
         }
 
         // Larry can't find it :(

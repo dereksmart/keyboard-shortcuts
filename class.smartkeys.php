@@ -66,9 +66,15 @@ class Smartkeys {
 	 * @return array
 	 */
 	function smartkeys_organized_pages() {
-		global $submenu;
+		global $menu, $submenu;
 
 		$all_pages = array();
+
+		foreach ( $menu as $menu_item ) {
+			if ( $menu_item[0] ) {
+				$all_pages[ $menu_item[0] ] = $menu_item;
+			}
+		}
 
 		foreach ( $submenu as $index => $pages ) {
 			$title = $this->smartkeys_convert_to_title( $index );
