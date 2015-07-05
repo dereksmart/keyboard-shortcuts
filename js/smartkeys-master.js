@@ -42,7 +42,7 @@
 				currentCombo = '';
             }
             // Larry has been summoned
-            if ( currentCombo === 'larrylarry' ) {
+            if ( currentCombo === 'larrylarrylarry' ) {
                 larryBird();
                 return;
             }
@@ -97,7 +97,7 @@
     }
 
     function smartSearch( term ) {
-        var htmlList = '', backupResults = '', inputList = '', i, searchTerm, allPages = [], subPages = [], parentPages = [], subLink;
+        var htmlList = '', searchTerm, allPages = [], subPages = [], parentPages = [];
 
         _.each( adminPages, function( subs, parent ) {
 
@@ -128,57 +128,60 @@
         });
 
         _.each( filteredPages, function( page ) {
-            htmlList  += '<a href="' + page.linky + '">' + page.searchTerm + '</a><br>';
+            htmlList  += '<li class="smart-result" data-link-target=" '+ page.linky +' " ><a href="' + page.linky + '">' + page.searchTerm + '</a></li>';
         });
 
-        if ( term.length > 1 ) {
-            $( '#smart-results' ).html( htmlList + '<br>' );
-
+        // Show list of results and submit button
+        if ( searchTerm.length >= 1 ) {
+            $( '#smart-results' ).html( htmlList );
+            $( '#for-the-three' ).show();
+        } else {
+            $('#for-the-three').hide();
         }
 
-        // Larry can't find it :(
-        // At least he tries to help.
-        //if ( '' === htmlList ) {
-        //    $( '#for-the-three' ).hide();
-        //    $( '#smart-results' ).html( '<span class="smart-result">Larry can\'t find ' + term
-        //        + '</span><br><h3>Examples: </h3>' + 'command'
-        //        + '<br><a class="see-all" style="cursor: pointer">see all</a>' );
-        //
-        //    // Show the backup results.
-        //    $( '.see-all' ).click( function() {
-        //        $( '#backup-results').show();
-        //        $( '#smart-results, #for-the-three').hide();
-        //        $( 'input#larry-input' ).val('').select();
-        //    });
-        //}
-        //
+        // Select the first result
+        $( '.smart-result' ).first().addClass( 'smart-result-selected' );
+
+        // Larry can't find it :(... At least he tries to help.
+        if ( '' === htmlList ) {
+            larryCantFindAnything( term );
+        }
+
         //// Listen for the form to be submitted
-        //var form = document.getElementById( 'larry-bird-form' );
-        //if ( form.attachEvent) {
-        //    form.attachEvent( "submit", processForm );
-        //} else {
-        //    form.addEventListener( "submit", processForm );
-        //}
+        var form = document.getElementById( 'larry-bird-form' );
+        if ( form.attachEvent) {
+            form.attachEvent( "submit", processForm );
+        } else {
+            form.addEventListener( "submit", processForm );
+        }
     }
 
     // Process the form
     function processForm(e) {
         if ( e.preventDefault ) e.preventDefault();
         var input = $( '#larry-input').val(), i;
-        var url = '';
-
-        // Find the action based on the input
-        _.each( data, function( cmdAct ) {
-            if ( cmdAct.name == input ) {
-                url += cmdAct.action;
-            }
-        });
 
         // Navigate to the page!
-        window.location.href = smartkeysMasterVars.home_url + '/wp-admin/' + url;
+        window.location.href = $( '.smart-result-selected' ).attr( 'data-link-target' );
 
         // You must return false to prevent the default form behavior
         return false;
+    }
+
+
+    // This is shown when Larry can't find any results.
+    function larryCantFindAnything( term ) {
+        $( '#for-the-three' ).hide();
+        $( '#smart-results' ).html( '<span class="smart-result">Larry can\'t find ' + term
+        + '</span><br><h3>Examples: </h3>' + 'command'
+        + '<br><a class="see-all" style="cursor: pointer">see all</a>' );
+
+        // Show the backup results.
+        $( '.see-all' ).click( function() {
+            $( '#backup-results').show();
+            $( '#smart-results, #for-the-three').hide();
+            $( 'input#larry-input' ).val('').select();
+        });
     }
 
 /*

@@ -13,7 +13,7 @@ add_thickbox();
             <h1>SHHHHHH</h1>
             <h3>Just start typing</h3>
             <form id="larry-bird-form" action="" method="post">
-                <input type="text" id="larry-input" list="larry-bird-form-list" />
+                <input type="text" id="larry-input" list="larry-bird-form-list" autocomplete="off" />
                 <datalist id="larry-bird-form-list"></datalist>
                 <button type="submit" id="for-the-three" style="display: none;">For the Three!</button>
             </form>
@@ -47,10 +47,10 @@ add_thickbox();
         margin: 1.5em .5em .5em;
     }
     .smart-result {
-        display: inline-block;
-        list-style-type: none;
-        font-size: 1.2em;
-        font-weight: bold;
+        /*display: inline-block;*/
+        /*list-style-type: none;*/
+        /*font-size: 1.2em;*/
+        /*font-weight: bold;*/
         margin: 1em 1em ;
     }
 
